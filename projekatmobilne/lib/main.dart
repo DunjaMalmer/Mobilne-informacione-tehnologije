@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:projekatmobilne/consts/theme_data.dart';
 import 'package:projekatmobilne/providers/theme_provider.dart';
-import 'package:projekatmobilne/screen/home_screen.dart';
+import 'package:projekatmobilne/screen/root_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,14 +20,12 @@ class MyApp extends StatelessWidget {
           return ThemeProvider();
         }),
       ],
-      child: Consumer(builder: (context, themeProvider, child) {
+      child: Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
         return MaterialApp(
           title: 'Poslasticarnica',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: const HomeScreen(),
+          theme: Styles.themeData(
+              isDarkTheme: themeProvider.getIsDarkTheme, context: context),
+          home: const RootScreen(),
         );
       }),
     );
