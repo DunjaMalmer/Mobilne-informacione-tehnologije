@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:projekatmobilne/screen/cart_screen.dart';
+import 'package:projekatmobilne/screen/cart/cart_screen.dart';
 import 'package:projekatmobilne/screen/home_screen.dart';
 import 'package:projekatmobilne/screen/profile_screen.dart';
 import 'package:projekatmobilne/screen/search_screen.dart';
 
-class RootScreen extends StatefulWidget {
+class RootScreen extends StatefulWidget { //Mora da pamti trenutno aktivan ekran
   const RootScreen({super.key});
 
   @override
@@ -27,7 +27,7 @@ class _RootScreenState extends State<RootScreen> {
       CartScreen(),
       ProfileScreen(),
     ];
-    controller = PageController(initialPage: currentScreen);
+    controller = PageController(initialPage: currentScreen); //koji ektan je trenutno prokazan
   }
 
   @override
@@ -73,3 +73,5 @@ class _RootScreenState extends State<RootScreen> {
     );
   }
 }
+//RootScreen je centralna navigaciona tačka aplikacije 
+//koja povezuje sve glavne ekrane kroz Bottom Navigation + PageView

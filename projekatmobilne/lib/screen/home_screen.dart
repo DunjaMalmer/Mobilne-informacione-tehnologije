@@ -4,7 +4,7 @@ import 'package:projekatmobilne/providers/theme_provider.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
 import 'package:projekatmobilne/widgets/title_text.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget { //ne čuva stanje teme, već ga dobija iz ThemeProvider-a
   const HomeScreen({super.key});
 
   @override
@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
                 themeProvider.getIsDarkTheme ? "Dark Theme" : "Light Theme"),
             value: themeProvider.getIsDarkTheme,
             onChanged: (value) {
-              themeProvider.setDarkTheme(themeValue: value);
+              themeProvider.setDarkTheme(themeValue: value); //menja temu
             },
           )
         ],

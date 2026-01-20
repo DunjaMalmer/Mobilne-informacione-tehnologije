@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SubtitleTextWidget extends StatelessWidget {
-  const SubtitleTextWidget(
+class SubtitleTextWidget extends StatelessWidget { //Ne čuva niti menja stanje, samo prikayuje tekst
+  const SubtitleTextWidget( //prikay teksta
       {super.key,
       required this.label,
       this.fontSize = 18,

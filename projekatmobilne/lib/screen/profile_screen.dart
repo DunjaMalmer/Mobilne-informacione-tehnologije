@@ -12,12 +12,12 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context); //uptavljanje temom
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset(AssetsManager.logo),
+          child: Image.asset(AssetsManager.logo), //logo
         ),
         title: const Text(
           "Profile Screen",
@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
                   label: "Please login to have unlimited access"),
             ),
           ),
-          Visibility(
+          Visibility( //Prikazuje avatar, ime i email korisnika
             visible: true,
             child: Padding(
               padding:

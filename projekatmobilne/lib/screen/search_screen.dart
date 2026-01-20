@@ -8,7 +8,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: TitelesTextWidget(label: "Search Screen"),
+        child: TitelesTextWidget(label: "Search Screen"), //samo prikazuje naslov „Search Screen“
       ),
     );
   }
