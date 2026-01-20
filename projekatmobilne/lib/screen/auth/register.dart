@@ -60,6 +60,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _registerFCT() async {
     final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    if (!isValid) return;
+
+  _formkey.currentState!.save();
   }
 
   Future<void> localImagePicker() async {
@@ -109,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(width: 12),
                     const Text(
-                      "FTN Script Store",
+                      "Poslasticarnica",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

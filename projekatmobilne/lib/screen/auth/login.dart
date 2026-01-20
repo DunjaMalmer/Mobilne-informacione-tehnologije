@@ -47,6 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _loginFct() async {
     final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    if (!isValid) return;
+
+  _formkey.currentState!.save();
   }
 
   @override
@@ -74,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(width: 12),
                     const Text(
-                      "FTN Script Store",
+                      "Poslasticarnica",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
