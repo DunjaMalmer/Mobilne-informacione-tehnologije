@@ -6,6 +6,7 @@ import 'package:projekatmobilne/screen/profile_screen.dart';
 import 'package:projekatmobilne/screen/search_screen.dart';
 
 class RootScreen extends StatefulWidget { //Mora da pamti trenutno aktivan ekran
+  static const String routeName = "/RootScreen"; 
   const RootScreen({super.key});
 
   @override
@@ -14,7 +15,7 @@ class RootScreen extends StatefulWidget { //Mora da pamti trenutno aktivan ekran
 
 class _RootScreenState extends State<RootScreen> {
   late List<Widget> screens;
-  int currentScreen = 3;
+  int currentScreen = 0; //aplikacija se otvara na home pocetni ekran
   late PageController controller;
 
   @override
