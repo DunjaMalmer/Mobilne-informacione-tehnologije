@@ -34,7 +34,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
 // automaticallyImplyLeading: false,
-          title: const Text("FTN Script Store")),
+          title: const Text("Sweet haven")),
       body: SingleChildScrollView(
         child: Column(
           children: [

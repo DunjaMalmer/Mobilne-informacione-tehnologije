@@ -113,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(width: 12),
                     const Text(
-                      "Poslasticarnica",
+                      "Sweet haven",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

@@ -5,8 +5,8 @@ import 'package:projekatmobilne/screen/home_screen.dart';
 import 'package:projekatmobilne/screen/profile_screen.dart';
 import 'package:projekatmobilne/screen/search_screen.dart';
 
-class RootScreen extends StatefulWidget { //Mora da pamti trenutno aktivan ekran
-  static const String routeName = "/RootScreen"; 
+class RootScreen extends StatefulWidget {
+  static const String routeName = "/RootScreen";
   const RootScreen({super.key});
 
   @override
@@ -14,21 +14,26 @@ class RootScreen extends StatefulWidget { //Mora da pamti trenutno aktivan ekran
 }
 
 class _RootScreenState extends State<RootScreen> {
-  late List<Widget> screens;
-  int currentScreen = 0; //aplikacija se otvara na home pocetni ekran
-  late PageController controller;
+  late final List<Widget> screens;
+  int currentScreen = 0;
+  late final PageController controller;
 
   @override
   void initState() {
     super.initState();
-
     screens = const [
       HomeScreen(),
       SearchScreen(),
       CartScreen(),
       ProfileScreen(),
     ];
-    controller = PageController(initialPage: currentScreen); //koji ektan je trenutno prokazan
+    controller = PageController(initialPage: currentScreen);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,38 +46,40 @@ class _RootScreenState extends State<RootScreen> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentScreen,
-        height: kBottomNavigationBarHeight,
+        height: 72,
         onDestinationSelected: (index) {
           setState(() {
             currentScreen = index;
           });
-          controller.jumpToPage(currentScreen);
+          controller.animateToPage(
+            currentScreen,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOut,
+          );
         },
         destinations: const [
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.home),
             icon: Icon(IconlyLight.home),
-            label: "Home",
+            label: "Pocetna",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.search),
             icon: Icon(IconlyLight.search),
-            label: "Search",
+            label: "Pretraga",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.bag2),
             icon: Icon(IconlyLight.bag2),
-            label: "Cart",
+            label: "Korpa",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.profile),
             icon: Icon(IconlyLight.profile),
-            label: "Profile",
-          )
+            label: "Profil",
+          ),
         ],
       ),
     );
   }
 }
-//RootScreen je centralna navigaciona tačka aplikacije 
-//koja povezuje sve glavne ekrane kroz Bottom Navigation + PageView

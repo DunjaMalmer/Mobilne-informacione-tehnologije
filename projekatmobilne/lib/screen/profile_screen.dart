@@ -23,9 +23,10 @@ class ProfileScreen extends StatelessWidget {
           "Profile Screen",
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.only(bottom: 20),
+          children: [
           const Visibility(
             visible: false,
             child: Padding(
@@ -34,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
                   label: "Please login to have unlimited access"),
             ),
           ),
-          Visibility( //Prikazuje avatar, ime i email korisnika
+          Visibility(
             visible: true,
             child: Padding(
               padding:
@@ -150,8 +151,9 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-          )
+          ),
         ],
+        ),
       ),
     );
   }
