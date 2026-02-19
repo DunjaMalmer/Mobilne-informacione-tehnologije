@@ -1,5 +1,5 @@
 class AssetsManager {
-  static String imagePath = "assets/user";
+  static const  String imagePath = "assets/user";
 
-  static String logo = "$imagePath/logo.png";
+  static const  String logo = "$imagePath/logo.png";
 }

@@ -1,133 +1,191 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:projekatmobilne/consts/app_colors.dart';
-import 'package:projekatmobilne/consts/app_constants.dart';
-import 'package:projekatmobilne/widgets/products/heart_btn.dart';
-import 'package:projekatmobilne/widgets/subtitle_text.dart';
-import 'package:projekatmobilne/widgets/title_text.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const routName = "/ProductDetailsScreen";
-  const ProductDetailsScreen({super.key});
+  const ProductDetailsScreen({
+    super.key,
+    required this.name,
+    required this.priceRsd,
+    required this.imagePath,
+    required this.description,
+    this.category = 'Popularno',
+  });
+
+  final String name;
+  final int priceRsd;
+  final String imagePath;
+  final String description;
+  final String category;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  int quantity = 1;
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final scheme = Theme.of(context).colorScheme;
+    final total = widget.priceRsd * quantity;
+
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-// Navigator.canPop(context) ? Navigator.pop(context) : null;
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              }
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-            ),
-          ),
-// automaticallyImplyLeading: false,
-          title: const Text("Sweet haven")),
+        title: const Text("Sweet Haven"),
+      ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FancyShimmerImage(
-              imageUrl: AppConstants.imageUrl,
-              height: size.height * 0.38,
+            Image.asset(
+              widget.imagePath,
+              height: 280,
               width: double.infinity,
-            ),
-            const SizedBox(
-              height: 20,
+              fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    widget.name,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      color: scheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    widget.description,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Flexible(
-                        child: Text(
-                          "Title" * 18,
-                          softWrap: true,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
+                      Text(
+                        "${widget.priceRsd} RSD",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: scheme.primary,
                         ),
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const SubtitleTextWidget(
-                        label: "1550.00 RSD",
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.darkPrimary,
+                      const SizedBox(width: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: scheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Text(
+                          widget.category,
+                          style: TextStyle(
+                            color: scheme.onPrimaryContainer,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceVariant.withOpacity(0.55),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const HeartButtonWidget(
-                          bkgColor: AppColors.darkPrimary,
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: kBottomNavigationBarHeight - 10,
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.darkPrimary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    30.0,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {},
-                              icon: const Icon(Icons.add_shopping_cart,
-                                  color: Colors.white),
-                              label: const Text(
-                                "Add to cart",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+                        Text(
+                          'Kolicina',
+                          style: TextStyle(
+                            color: scheme.onSurface,
+                            fontWeight: FontWeight.w700,
                           ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: quantity == 1
+                              ? null
+                              : () {
+                                  setState(() {
+                                    quantity--;
+                                  });
+                                },
+                          icon: const Icon(Icons.remove_circle_outline_rounded),
+                        ),
+                        Text(
+                          "$quantity",
+                          style: TextStyle(
+                            color: scheme.onSurface,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              quantity++;
+                            });
+                          },
+                          icon: const Icon(Icons.add_circle_outline_rounded),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  const SizedBox(height: 18),
+                  Text(
+                    'Opis',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: scheme.onSurface,
+                    ),
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.description,
+                    style: TextStyle(
+                      fontSize: 15,
+                      height: 1.4,
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                  Row(
                     children: [
-                      TitelesTextWidget(label: "About this item"),
-                      SubtitleTextWidget(label: "In Books"),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.favorite_border_rounded),
+                          label: const Text('Wishlist'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        flex: 2,
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.shopping_bag_outlined),
+                          label: Text('Dodaj $total RSD'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SubtitleTextWidget(label: "Description" * 15),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

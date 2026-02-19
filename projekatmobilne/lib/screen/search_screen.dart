@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:projekatmobilne/screen/inner_screen/product_details.dart';
+import 'package:projekatmobilne/services/assets_manager.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   static const List<String> _filters = [
     'Torte',
-    'Kolaci',
+    'Kolači',
     'Makaronsi',
-    'Bez secera',
+    'Bez sećera',
   ];
 
-  static const List<Map<String, String>> _results = [
-    {'name': 'Red velvet mini', 'category': 'Torte', 'price': '550 RSD'},
-    {'name': 'Vanila tart', 'category': 'Kolaci', 'price': '320 RSD'},
-    {'name': 'Lemon makaronsi', 'category': 'Makaronsi', 'price': '690 RSD'},
-    {'name': 'Cheesecake mini', 'category': 'Deserti', 'price': '480 RSD'},
+  static const List<Map<String, dynamic>> _results = [
+    {
+      'name': 'Čoko malina torta',
+      'category': 'Torte',
+      'priceRsd': 2400,
+      'imagePath': '${AssetsManager.imagePath}/cokomalina.jpg',
+      'description': 'Čokoladna baza i lagani fil od maline.',
+    },
+    {
+      'name': 'Pistać macaronsi',
+      'category': 'Makaronsi',
+      'priceRsd': 690,
+      'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
+      'description': 'Kremasti pistac fil i hrskava korica.',
+    },
+    {
+      'name': 'Mini cheesecake',
+      'category': 'Deserti',
+      'priceRsd': 480,
+      'imagePath': '${AssetsManager.imagePath}/mini.jpg',
+      'description': 'Lagani mini cheesecake za brzo i slatko uzivanje.',
+    },
   ];
 
   @override
@@ -45,7 +64,7 @@ class SearchScreen extends StatelessWidget {
             children: _filters.map((filter) {
               return Chip(
                 label: Text(filter),
-                backgroundColor: scheme.surfaceContainerHighest,
+                backgroundColor: scheme.surfaceVariant,
                 side: BorderSide.none,
               );
             }).toList(),
@@ -64,20 +83,36 @@ class SearchScreen extends StatelessWidget {
             return Card(
               margin: const EdgeInsets.only(bottom: 10),
               child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: scheme.primaryContainer,
-                  child: Icon(
-                    Icons.bakery_dining_outlined,
-                    color: scheme.onPrimaryContainer,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ProductDetailsScreen(
+                        name: item['name'] as String,
+                        priceRsd: item['priceRsd'] as int,
+                        imagePath: item['imagePath'] as String,
+                        description: item['description'] as String,
+                        category: item['category'] as String,
+                      ),
+                    ),
+                  );
+                },
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    item['imagePath'] as String,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 title: Text(
-                  item['name']!,
+                  item['name'] as String,
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: Text(item['category']!),
+                subtitle: Text(item['category'] as String),
                 trailing: Text(
-                  item['price']!,
+                  "${item['priceRsd']} RSD",
                   style: TextStyle(
                     color: scheme.primary,
                     fontWeight: FontWeight.w700,

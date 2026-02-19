@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:projekatmobilne/providers/theme_provider.dart';
+import 'package:projekatmobilne/screen/inner_screen/product_details.dart';
 import 'package:projekatmobilne/services/assets_manager.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,15 +9,33 @@ class HomeScreen extends StatelessWidget {
 
   static const List<Map<String, String>> _categories = [
     {'title': 'Torte'},
-    {'title': 'Kolači'},
+    {'title': 'Kolaci'},
     {'title': 'Makaronsi'},
     {'title': 'Deserti'},
   ];
 
-  static const List<Map<String, String>> _popularItems = [
-    {'name': 'Čoko malina torta', 'price': '2.400 RSD'},
-    {'name': 'Pistaci makaronsi', 'price': '690 RSD'},
-    {'name': 'Cheesecake mini', 'price': '480 RSD'},
+  static const List<Map<String, dynamic>> _popularItems = [
+    {
+      'name': 'Čoko malina torta',
+      'priceRsd': 2400,
+      'category': 'Torte',
+      'imagePath': '${AssetsManager.imagePath}/cokomalina.jpg',
+      'description': 'Čokoladna baza i lagani fil od maline.',
+    },
+    {
+      'name': 'Pistać macaronsi',
+      'priceRsd': 690,
+      'category': 'Makaronsi',
+      'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
+      'description': 'Kremasti pistać fil i hrskava korica.',
+    },
+    {
+      'name': 'Mini cheesecake',
+      'priceRsd': 480,
+      'category': 'Deserti',
+      'imagePath': '${AssetsManager.imagePath}/mini.jpg',
+      'description': 'Lagani mini cheesecake za brzo slatko uživanje.',
+    },
   ];
 
   @override
@@ -112,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                     children: _categories.map((item) {
                       return Chip(
                         label: Text(item['title']!),
-                        backgroundColor: scheme.surfaceContainerHighest,
+                        backgroundColor: scheme.surfaceVariant,
                         side: BorderSide.none,
                       );
                     }).toList(),
@@ -130,34 +149,52 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverList.builder(
-            itemCount: _popularItems.length,
-            itemBuilder: (context, index) {
-              final item = _popularItems[index];
-              return ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                leading: CircleAvatar(
-                  backgroundColor: scheme.primaryContainer,
-                  child: Icon(
-                    Icons.cake_outlined,
-                    color: scheme.onPrimaryContainer,
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = _popularItems[index];
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProductDetailsScreen(
+                          name: item['name'] as String,
+                          priceRsd: item['priceRsd'] as int,
+                          imagePath: item['imagePath'] as String,
+                          description: item['description'] as String,
+                          category: item['category'] as String,
+                        ),
+                      ),
+                    );
+                  },
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      item['imagePath'] as String,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                title: Text(
-                  item['name']!,
-                  style: const TextStyle(fontWeight: FontWeight.w700),
-                ),
-                subtitle: const Text('Sveže pripremljeno danas'),
-                trailing: Text(
-                  item['price']!,
-                  style: TextStyle(
-                    color: scheme.primary,
-                    fontWeight: FontWeight.w700,
+                  title: Text(
+                    item['name'] as String,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
-                ),
-              );
-            },
+                  subtitle: const Text('Sveze pripremljeno danas'),
+                  trailing: Text(
+                    "${item['priceRsd']} RSD",
+                    style: TextStyle(
+                      color: scheme.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                );
+              },
+              childCount: _popularItems.length,
+            ),
           ),
           SliverToBoxAdapter(
             child: SwitchListTile(
