@@ -9,9 +9,9 @@ class HomeScreen extends StatelessWidget {
 
   static const List<Map<String, String>> _categories = [
     {'title': 'Torte'},
-    {'title': 'Kolaci'},
+    {'title': 'Kolači'},
     {'title': 'Makaronsi'},
-    {'title': 'Deserti'},
+    {'title': 'Bez sećera'},
   ];
 
   static const List<Map<String, dynamic>> _popularItems = [
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
       'description': 'Čokoladna baza i lagani fil od maline.',
     },
     {
-      'name': 'Pistać macaronsi',
+      'name': 'Pistać makaronsi',
       'priceRsd': 690,
       'category': 'Makaronsi',
       'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
@@ -92,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                '20% popusta na voćne torte',
+                                '10% popusta na voćne torte',
                                 style: TextStyle(
                                   color: scheme.onPrimaryContainer,
                                   fontSize: 20,
@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Image.asset(
-                            '${AssetsManager.imagePath}/banners/torta_banner.jpg.jpg',
+                            '${AssetsManager.imagePath}/vocna.jpg',
                             width: 90,
                             height: 90,
                             fit: BoxFit.cover,
@@ -183,7 +183,16 @@ class HomeScreen extends StatelessWidget {
                     item['name'] as String,
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  subtitle: const Text('Sveze pripremljeno danas'),
+                  subtitle: Text(
+                      item['name'] == 'Čoko malina torta'
+                      ? 'Bogata čokolada i sveža malina'
+                     : item['name'] == 'Pistać makaronsi'
+                     ? 'Omiljeni izbor kupaca'
+                    : item['name'] == 'Mini cheesecake'
+                    ? 'Lagan i osvežavajući dezert'
+                    : '',
+),
+
                   trailing: Text(
                     "${item['priceRsd']} RSD",
                     style: TextStyle(
