@@ -1,10 +1,9 @@
 import 'dart:developer';
 
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:projekatmobilne/consts/app_colors.dart';
-import 'package:projekatmobilne/consts/app_constants.dart';
+import 'package:projekatmobilne/services/assets_manager.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
 import 'package:projekatmobilne/widgets/title_text.dart';
 
@@ -18,26 +17,31 @@ class ProductWidget extends StatefulWidget {
 class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
+
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: GestureDetector(
         onTap: () {
-          log("ToDo add the navigate to the product details screen");
+          log("Navigate to product details");
         },
         child: Column(
           children: [
+
+            /// IMAGE
             ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
-              child: FancyShimmerImage(
-                imageUrl: AppConstants.imageUrl,
+              child: Image.asset(
+                "${AssetsManager.imagePath}/cokomalina.jpg",
                 height: size.height * 0.22,
                 width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(
-              height: 12.0,
-            ),
+
+            const SizedBox(height: 12.0),
+
+            /// TITLE + HEART
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: Row(
@@ -45,7 +49,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Flexible(
                     flex: 5,
                     child: TitelesTextWidget(
-                      label: "Title " * 10,
+                      label: "Čoko malina torta",
                       fontSize: 18,
                       maxLines: 2,
                     ),
@@ -60,18 +64,18 @@ class _ProductWidgetState extends State<ProductWidget> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 6.0,
-            ),
+
+            const SizedBox(height: 6.0),
+
+            /// PRICE + CART
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Flexible(
-                    flex: 1,
                     child: SubtitleTextWidget(
-                      label: "1200 RSD",
+                      label: "2400 RSD",
                       fontWeight: FontWeight.w600,
                       color: AppColors.darkPrimary,
                     ),
@@ -94,9 +98,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 12.0,
-            ),
+
+            const SizedBox(height: 12.0),
           ],
         ),
       ),

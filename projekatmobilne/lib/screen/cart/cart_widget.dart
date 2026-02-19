@@ -1,8 +1,7 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:projekatmobilne/consts/app_colors.dart';
-import 'package:projekatmobilne/consts/app_constants.dart';
+import 'package:projekatmobilne/services/assets_manager.dart';
 import 'package:projekatmobilne/screen/cart/quantity_btm_sheet.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
 import 'package:projekatmobilne/widgets/title_text.dart';
@@ -12,7 +11,8 @@ class CartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
+
     return FittedBox(
       child: IntrinsicWidth(
         child: Padding(
@@ -20,18 +20,21 @@ class CartWidget extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
+              /// IMAGE
               ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: FancyShimmerImage(
-                  imageUrl: AppConstants.imageUrl,
+                child: Image.asset(
+                  "${AssetsManager.imagePath}/cokomalina.jpg",
                   height: size.height * 0.2,
                   width: size.height * 0.2,
-                  boxFit: BoxFit.contain,
+                  fit: BoxFit.contain,
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
+
+              const SizedBox(width: 10),
+
+              /// DETAILS
               IntrinsicWidth(
                 child: Column(
                   children: [
@@ -40,7 +43,7 @@ class CartWidget extends StatelessWidget {
                         SizedBox(
                           width: size.width * 0.6,
                           child: TitelesTextWidget(
-                            label: "Title" * 15,
+                            label: "Čoko malina torta",
                             maxLines: 2,
                           ),
                         ),
@@ -63,14 +66,15 @@ class CartWidget extends StatelessWidget {
                         ),
                       ],
                     ),
+
                     Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const SubtitleTextWidget(
-                          label: "1200 RSD",
+                          label: "2400 RSD",
                           color: AppColors.darkPrimary,
                         ),
                         const Spacer(),
+
                         OutlinedButton.icon(
                           onPressed: () async {
                             await showModalBottomSheet(
@@ -89,9 +93,7 @@ class CartWidget extends StatelessWidget {
                             );
                           },
                           icon: const Icon(IconlyLight.arrowDown2),
-                          label: const Text(
-                            "Qty: 5",
-                          ),
+                          label: const Text("Qty: 5"),
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(width: 1),
                             shape: RoundedRectangleBorder(
@@ -100,10 +102,10 @@ class CartWidget extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
     {'title': 'Torte'},
     {'title': 'Kolači'},
     {'title': 'Makaronsi'},
-    {'title': 'Bez sećera'},
+    {'title': 'Bez šećera'},
   ];
 
   static const List<Map<String, dynamic>> _popularItems = [

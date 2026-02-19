@@ -1,32 +1,39 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:projekatmobilne/consts/app_constants.dart';
+import 'package:projekatmobilne/services/assets_manager.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
 import 'package:projekatmobilne/widgets/title_text.dart';
 
 class OrdersWidget extends StatefulWidget {
   const OrdersWidget({super.key});
+
   @override
   State<OrdersWidget> createState() => _OrdersWidgetState();
 }
 
 class _OrdersWidgetState extends State<OrdersWidget> {
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       child: Row(
         children: [
+
+          /// IMAGE
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: FancyShimmerImage(
+            child: Image.asset(
+              "${AssetsManager.imagePath}/cokomalina.jpg",
               height: size.width * 0.25,
               width: size.width * 0.25,
-              imageUrl: AppConstants.imageUrl,
+              fit: BoxFit.cover,
             ),
           ),
+
+          /// DETAILS
           Flexible(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -38,20 +45,22 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                     children: [
                       const Flexible(
                         child: TitelesTextWidget(
-                          label: 'productTitle',
+                          label: 'Čoko malina torta',
                           maxLines: 2,
                           fontSize: 15,
                         ),
                       ),
                       IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.clear,
-                            color: Colors.red,
-                            size: 22,
-                          )),
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.clear,
+                          color: Colors.red,
+                          size: 22,
+                        ),
+                      ),
                     ],
                   ),
+
                   const Row(
                     children: [
                       TitelesTextWidget(
@@ -60,23 +69,22 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                       ),
                       Flexible(
                         child: SubtitleTextWidget(
-                          label: "11.99 \$",
+                          label: "2400 RSD",
                           fontSize: 15,
                           color: Colors.blue,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+
+                  const SizedBox(height: 5),
+
                   const SubtitleTextWidget(
-                    label: "Qty: 10",
+                    label: "Qty: 1",
                     fontSize: 15,
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+
+                  const SizedBox(height: 5),
                 ],
               ),
             ),

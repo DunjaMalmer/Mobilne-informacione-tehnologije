@@ -21,18 +21,18 @@ class SearchScreen extends StatelessWidget {
       'description': 'Čokoladna baza i lagani fil od maline.',
     },
     {
-      'name': 'Pistać macaronsi',
+      'name': 'Pistać makaronsi',
       'category': 'Makaronsi',
       'priceRsd': 690,
       'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
-      'description': 'Kremasti pistac fil i hrskava korica.',
+      'description': 'Kremasti pistać fil i hrskava korica.',
     },
     {
       'name': 'Mini cheesecake',
       'category': 'Deserti',
       'priceRsd': 480,
       'imagePath': '${AssetsManager.imagePath}/mini.jpg',
-      'description': 'Lagani mini cheesecake za brzo i slatko uzivanje.',
+      'description': 'Lagani mini cheesecake za brzo i slatko uživanje.',
     },
   ];
 
@@ -49,7 +49,7 @@ class SearchScreen extends StatelessWidget {
         children: [
           TextField(
             decoration: InputDecoration(
-              hintText: 'Pretrazi proizvode u Sweet Haven',
+              hintText: 'Pretraži proizvode u Sweet Haven',
               prefixIcon: const Icon(Icons.search_rounded),
               suffixIcon: IconButton(
                 onPressed: () {},

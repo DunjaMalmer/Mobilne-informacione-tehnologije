@@ -1,7 +1,6 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:projekatmobilne/consts/app_colors.dart';
-import 'package:projekatmobilne/consts/app_constants.dart';
+import 'package:projekatmobilne/services/assets_manager.dart';
 import 'package:projekatmobilne/screen/inner_screen/product_details.dart';
 import 'package:projekatmobilne/widgets/products/heart_btn.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
@@ -11,11 +10,12 @@ class LatestArrivalProductsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () async {
+        onTap: () {
           Navigator.pushNamed(context, ProductDetailsScreen.routName);
         },
         child: SizedBox(
@@ -23,33 +23,39 @@ class LatestArrivalProductsWidget extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// IMAGE
               Flexible(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
-                  child: FancyShimmerImage(
-                    imageUrl: AppConstants.imageUrl,
+                  child: Image.asset(
+                    "${AssetsManager.imagePath}/cokomalina.jpg",
                     height: size.width * 0.24,
                     width: size.width * 0.32,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
+
+              const SizedBox(width: 8),
+
+              /// DETAILS
               Flexible(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
+
                     Text(
-                      "Title" * 15,
+                      "Čoko malina torta",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+
+                    const SizedBox(height: 5),
+
                     FittedBox(
                       child: Row(
                         children: [
@@ -63,12 +69,12 @@ class LatestArrivalProductsWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+
+                    const SizedBox(height: 5),
+
                     const FittedBox(
                       child: SubtitleTextWidget(
-                        label: "1550.00 RSD",
+                        label: "2400 RSD",
                         fontWeight: FontWeight.w600,
                         color: AppColors.darkPrimary,
                       ),
