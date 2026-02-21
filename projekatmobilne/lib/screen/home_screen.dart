@@ -1,51 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:projekatmobilne/providers/products_provider.dart';
 import 'package:projekatmobilne/providers/theme_provider.dart';
-import 'package:projekatmobilne/screen/inner_screen/product_details.dart';
+import 'package:projekatmobilne/widgets/products/product_widget.dart';
 import 'package:projekatmobilne/services/assets_manager.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static const List<Map<String, String>> _categories = [
-    {'title': 'Torte'},
-    {'title': 'Kolači'},
-    {'title': 'Makaronsi'},
-    {'title': 'Bez šećera'},
-  ];
-
-  static const List<Map<String, dynamic>> _popularItems = [
-    {
-      'name': 'Čoko malina torta',
-      'priceRsd': 2400,
-      'category': 'Torte',
-      'imagePath': '${AssetsManager.imagePath}/cokomalina.jpg',
-      'description': 'Čokoladna baza i lagani fil od maline.',
-    },
-    {
-      'name': 'Pistać makaronsi',
-      'priceRsd': 690,
-      'category': 'Makaronsi',
-      'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
-      'description': 'Kremasti pistać fil i hrskava korica.',
-    },
-    {
-      'name': 'Mini cheesecake',
-      'priceRsd': 480,
-      'category': 'Deserti',
-      'imagePath': '${AssetsManager.imagePath}/mini.jpg',
-      'description': 'Lagani mini cheesecake za brzo slatko uživanje.',
-    },
+  static const List<String> _categories = [
+    'Torte',
+    'Kolači',
+    'Makaronsi',
+    'Bez šećera',
   ];
 
   @override
   Widget build(BuildContext context) {
+    final productsProvider = Provider.of<ProductsProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final scheme = Theme.of(context).colorScheme;
+
+    final products = productsProvider.getProducts;
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
+
+          //APP BAR
           SliverAppBar(
             pinned: true,
             title: const Text('Sweet Haven'),
@@ -56,12 +38,16 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
+
+          //CONTENT
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                  //DNEVNA PONUDA
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -115,100 +101,70 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
+
+                  const SizedBox(height: 24),
+
+                  // KATEGORIJE
                   Text(
                     'Kategorije',
                     style: TextStyle(
-                      color: scheme.onSurface,
-                      fontWeight: FontWeight.w700,
                       fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: scheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 12),
+
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: _categories.map((item) {
+                    children: _categories.map((category) {
                       return Chip(
-                        label: Text(item['title']!),
-                        backgroundColor: scheme.surfaceVariant,
+                        label: Text(category),
+                        backgroundColor: scheme.surfaceContainerHighest,
                         side: BorderSide.none,
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
+
+                  const SizedBox(height: 24),
+
+                  // NAJPOPULARNIJE
                   Text(
                     'Najpopularnije',
                     style: TextStyle(
-                      color: scheme.onSurface,
-                      fontWeight: FontWeight.w700,
                       fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: scheme.onSurface,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final item = _popularItems[index];
-                return ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductDetailsScreen(
-                          name: item['name'] as String,
-                          priceRsd: item['priceRsd'] as int,
-                          imagePath: item['imagePath'] as String,
-                          description: item['description'] as String,
-                          category: item['category'] as String,
-                        ),
-                      ),
-                    );
-                  },
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      item['imagePath'] as String,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  title: Text(
-                    item['name'] as String,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  subtitle: Text(
-                      item['name'] == 'Čoko malina torta'
-                      ? 'Bogata čokolada i sveža malina'
-                     : item['name'] == 'Pistać makaronsi'
-                     ? 'Omiljeni izbor kupaca'
-                    : item['name'] == 'Mini cheesecake'
-                    ? 'Lagan i osvežavajući dezert'
-                    : '',
-),
 
-                  trailing: Text(
-                    "${item['priceRsd']} RSD",
-                    style: TextStyle(
-                      color: scheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                );
-              },
-              childCount: _popularItems.length,
+        
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                 return ProductWidget(product: products[index]);
+
+
+                },
+                childCount: products.length,
+              ),
             ),
           ),
+
+          
           SliverToBoxAdapter(
             child: SwitchListTile(
               title: Text(
-                themeProvider.getIsDarkTheme ? 'Tamna tema' : 'Svetla tema',
+                themeProvider.getIsDarkTheme
+                    ? 'Tamna tema'
+                    : 'Svetla tema',
               ),
               subtitle: const Text('Promeni izgled aplikacije'),
               value: themeProvider.getIsDarkTheme,
@@ -217,7 +173,10 @@ class HomeScreen extends StatelessWidget {
               },
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 24),
+          ),
         ],
       ),
     );

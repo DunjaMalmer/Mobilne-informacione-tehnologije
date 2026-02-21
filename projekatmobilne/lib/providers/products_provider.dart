@@ -47,7 +47,7 @@ class ProductsProvider with ChangeNotifier {
       productDescription:
           "Bogata čokolada i sveža malina u savršenom spoju ukusa.",
       productImage:
-          "${AssetsManager.imagePath}/cokomalina.jpg",
+          "${AssetsManager.imagePath}/coko.jpg",
       productQuantity: 10,
     ),
 

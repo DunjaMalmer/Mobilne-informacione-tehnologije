@@ -99,7 +99,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: scheme.surfaceVariant.withOpacity(0.55),
+                      color: scheme.surfaceContainerHighest.withOpacity(0.55),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(

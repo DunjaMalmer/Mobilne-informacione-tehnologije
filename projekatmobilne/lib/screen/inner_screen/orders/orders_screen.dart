@@ -22,7 +22,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
         ),
         body: isEmptyOrders
-            ? EmptyBagWidget(
+            ? const EmptyBagWidget(
                 imagePath: "${AssetsManager.imagePath}/bag/checkout.png",
                 title: "No orders has been placed yet",
                 subtitle: "",

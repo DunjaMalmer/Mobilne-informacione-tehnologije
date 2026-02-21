@@ -64,7 +64,7 @@ class SearchScreen extends StatelessWidget {
             children: _filters.map((filter) {
               return Chip(
                 label: Text(filter),
-                backgroundColor: scheme.surfaceVariant,
+                backgroundColor: scheme.surfaceContainerHighest,
                 side: BorderSide.none,
               );
             }).toList(),

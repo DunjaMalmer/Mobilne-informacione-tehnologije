@@ -28,7 +28,7 @@ class LatestArrivalProductsWidget extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
                   child: Image.asset(
-                    "${AssetsManager.imagePath}/cokomalina.jpg",
+                    "${AssetsManager.imagePath}/coko.jpg",
                     height: size.width * 0.24,
                     width: size.width * 0.32,
                     fit: BoxFit.cover,
@@ -45,11 +45,11 @@ class LatestArrivalProductsWidget extends StatelessWidget {
                   children: [
                     const SizedBox(height: 5),
 
-                    Text(
+                    const Text(
                       "Čoko malina torta",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),

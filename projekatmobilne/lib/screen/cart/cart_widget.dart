@@ -42,7 +42,7 @@ class CartWidget extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: size.width * 0.6,
-                          child: TitelesTextWidget(
+                          child: const TitelesTextWidget(
                             label: "Čoko malina torta",
                             maxLines: 2,
                           ),

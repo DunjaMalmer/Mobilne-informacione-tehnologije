@@ -1,51 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:projekatmobilne/providers/cart_provider.dart';
+import 'package:projekatmobilne/providers/products_provider.dart';
 import 'package:projekatmobilne/services/assets_manager.dart';
 import 'package:projekatmobilne/widgets/empty_bag.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
-  static const bool _isEmpty = false;
-  static const List<Map<String, dynamic>> _cartItems = [
-    {'name': 'Coko malina torta', 'price': 2400, 'qty': 1},
-    {'name': 'Pistaci makaronsi', 'price': 690, 'qty': 2},
-    {'name': 'Cheesecake mini', 'price': 480, 'qty': 2},
-  ];
-
-  int _totalPrice() {
-    return _cartItems.fold<int>(
-      0,
-      (sum, item) => sum + (item['price'] as int) * (item['qty'] as int),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final productsProvider = Provider.of<ProductsProvider>(context);
     final scheme = Theme.of(context).colorScheme;
 
-    if (_isEmpty) {
-      return Scaffold(
+    final cartItems = cartProvider.getCartitems.values.toList();
+
+    if (cartItems.isEmpty) {
+      return const Scaffold(
         body: EmptyBagWidget(
-          imagePath: "${AssetsManager.imagePath}/bag/checkout.png",
+          imagePath: AssetsManager.logo,
           title: "Korpa je prazna",
-          subtitle: "Dodaj svoje omiljene poslastice i zavrsi porudzbinu.",
+          subtitle:
+              "Dodaj svoje omiljene poslastice i završi porudžbinu.",
           buttonText: "Idi na meni",
         ),
       );
     }
 
+    double totalPrice = 0;
+
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset("${AssetsManager.imagePath}/logo.png"),
+          child: Image.asset(AssetsManager.logo),
         ),
         title: const Text("Sweet Haven"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              cartProvider.clearLocalCart();
+            },
             icon: const Icon(Icons.delete_outline_rounded),
-            tooltip: 'Obrisi sve',
           ),
         ],
       ),
@@ -62,11 +59,21 @@ class CartScreen extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            '${_cartItems.length} proizvoda spremno za porudzbinu',
+            '${cartItems.length} proizvoda spremno za porudžbinu',
             style: TextStyle(color: scheme.onSurfaceVariant),
           ),
           const SizedBox(height: 16),
-          ..._cartItems.map((item) {
+
+          /// PRODUCTS
+          ...cartItems.map((cartItem) {
+            final product = productsProvider
+                .findByProductId(cartItem.productId);
+
+            if (product == null) return const SizedBox();
+
+            totalPrice +=
+                product.productPrice * cartItem.quantity;
+
             return Card(
               margin: const EdgeInsets.only(bottom: 10),
               child: ListTile(
@@ -74,18 +81,17 @@ class CartScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 leading: CircleAvatar(
                   backgroundColor: scheme.primaryContainer,
-                  child: Icon(
-                    Icons.cake_outlined,
-                    color: scheme.onPrimaryContainer,
-                  ),
+                  backgroundImage:
+                      AssetImage(product.productImage),
                 ),
                 title: Text(
-                  item['name'] as String,
+                  product.productTitle,
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: Text('Kolicina: ${item['qty']}'),
+                subtitle: Text(
+                    'Količina: ${cartItem.quantity}'),
                 trailing: Text(
-                  '${item['price']} RSD',
+                  '${(product.productPrice * cartItem.quantity).toStringAsFixed(0)} RSD',
                   style: TextStyle(
                     color: scheme.primary,
                     fontWeight: FontWeight.w700,
@@ -96,6 +102,8 @@ class CartScreen extends StatelessWidget {
           }),
         ],
       ),
+
+      /// TOTAL SECTION
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         decoration: BoxDecoration(
@@ -110,8 +118,8 @@ class CartScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       'Ukupno',
@@ -121,7 +129,7 @@ class CartScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${_totalPrice()} RSD',
+                      '${totalPrice.toStringAsFixed(0)} RSD',
                       style: TextStyle(
                         color: scheme.primary,
                         fontWeight: FontWeight.w800,
@@ -133,11 +141,7 @@ class CartScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
-                ),
-                child: const Text('Nastavi na placanje'),
+                child: const Text('Nastavi na plaćanje'),
               ),
             ],
           ),

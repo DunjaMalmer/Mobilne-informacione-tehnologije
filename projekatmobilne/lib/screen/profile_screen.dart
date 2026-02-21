@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: scheme.surfaceVariant.withOpacity(0.45),
+                color: scheme.surfaceContainerHighest.withOpacity(0.45),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
