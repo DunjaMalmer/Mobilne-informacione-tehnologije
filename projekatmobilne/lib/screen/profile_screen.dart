@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:projekatmobilne/providers/theme_provider.dart';
+import 'package:projekatmobilne/screen/admin/admin_dashboard.dart';
 import 'package:projekatmobilne/services/assets_manager.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -95,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
             _ProfileActionTile(
               imagePath: "${AssetsManager.imagePath}/bag/wishlist.png",
               title: "Lista želja",
-              onTap: () => onStubTap("Lista zelja"),
+              onTap: () => onStubTap("Lista želja"),
             ),
             _ProfileActionTile(
               imagePath: "${AssetsManager.imagePath}/profile/repeat.png",
@@ -130,6 +131,21 @@ class ProfileScreen extends StatelessWidget {
               value: themeProvider.getIsDarkTheme,
               onChanged: (value) {
                 themeProvider.setDarkTheme(themeValue: value);
+              },
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.admin_panel_settings_outlined),
+              title: const Text("Admin panel"),
+              subtitle: const Text("Upravljanje proizvodima"),
+              trailing: const Icon(IconlyLight.arrowRight2),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AdminDashboard(),
+                  ),
+                );
               },
             ),
             const SizedBox(height: 14),

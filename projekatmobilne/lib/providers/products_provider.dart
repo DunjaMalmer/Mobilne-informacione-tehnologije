@@ -4,7 +4,6 @@ import 'package:projekatmobilne/services/assets_manager.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductsProvider with ChangeNotifier {
-
   List<ProductModel> get getProducts {
     return _products;
   }
@@ -30,28 +29,75 @@ class ProductsProvider with ChangeNotifier {
     required List<ProductModel> passedList,
   }) {
     return passedList
-        .where((element) => element.productTitle
-            .toLowerCase()
-            .contains(searchText.toLowerCase()))
+        .where((element) =>
+            element.productTitle.toLowerCase().contains(searchText.toLowerCase()))
         .toList();
   }
 
-  final List<ProductModel> _products = [
+  void addProduct({
+    required String title,
+    required double price,
+    required String category,
+    required String description,
+    required String image,
+    required int quantity,
+  }) {
+    _products.insert(
+      0,
+      ProductModel(
+        productId: const Uuid().v4(),
+        productTitle: title,
+        productPrice: price,
+        productCategory: category,
+        productDescription: description,
+        productImage: image,
+        productQuantity: quantity,
+      ),
+    );
+    notifyListeners();
+  }
 
-    /// TORTE
+  void updateProduct({
+    required String productId,
+    required String title,
+    required double price,
+    required String category,
+    required String description,
+    required String image,
+    required int quantity,
+  }) {
+    final index =
+        _products.indexWhere((product) => product.productId == productId);
+    if (index == -1) return;
+
+    _products[index] = ProductModel(
+      productId: productId,
+      productTitle: title,
+      productPrice: price,
+      productCategory: category,
+      productDescription: description,
+      productImage: image,
+      productQuantity: quantity,
+    );
+    notifyListeners();
+  }
+
+  void removeProductById(String productId) {
+    _products.removeWhere((product) => product.productId == productId);
+    notifyListeners();
+  }
+
+  final List<ProductModel> _products = [
     ProductModel(
       productId: const Uuid().v4(),
       productTitle: "Čoko malina torta",
       productPrice: 2400.0,
       productCategory: "Torte",
       productDescription:
-          "Bogata čokolada i sveža malina u savršenom spoju ukusa.",
-      productImage:
-          "${AssetsManager.imagePath}/coko.jpg",
+          "Bogata Čokolada i svež malina u savršenom spoju ukusa.",
+      productImage: "${AssetsManager.imagePath}/coko.jpg",
       productQuantity: 10,
     ),
-
-    /// MAKARONSI
     ProductModel(
       productId: const Uuid().v4(),
       productTitle: "Pistać makaronsi",
@@ -59,21 +105,16 @@ class ProductsProvider with ChangeNotifier {
       productCategory: "Makaronsi",
       productDescription:
           "Omiljeni izbor kupaca sa kremastim pistać filom.",
-      productImage:
-          "${AssetsManager.imagePath}/pistaci.jpg",
+      productImage: "${AssetsManager.imagePath}/pistaci.jpg",
       productQuantity: 25,
     ),
-
-    /// MINI POSLASTICE
     ProductModel(
       productId: const Uuid().v4(),
       productTitle: "Mini cheesecake",
       productPrice: 480.0,
       productCategory: "Mini poslastice",
-      productDescription:
-          "Lagan i osvežavajući desert idealan uz kafu.",
-      productImage:
-          "${AssetsManager.imagePath}/mini.jpg",
+      productDescription: "Lagan i osvežavajući desert idealan uz kafu.",
+      productImage: "${AssetsManager.imagePath}/mini.jpg",
       productQuantity: 30,
     ),
   ];

@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:projekatmobilne/consts/app_colors.dart';
+import 'package:projekatmobilne/screen/root_screen.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
 import 'package:projekatmobilne/widgets/title_text.dart';
 
 class EmptyBagWidget extends StatelessWidget {
   const EmptyBagWidget(
-      {super.key, this.imagePath, this.title, this.subtitle, this.buttonText});
+      {super.key,
+      this.imagePath,
+      this.title,
+      this.subtitle,
+      this.buttonText,
+      this.onPressed});
 
   final imagePath, title, subtitle, buttonText;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +52,15 @@ class EmptyBagWidget extends StatelessWidget {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
               elevation: 0, backgroundColor: AppColors.darkPrimary),
-          onPressed: () {},
+          onPressed: onPressed ??
+              () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (_) => const RootScreen(),
+                  ),
+                  (route) => false,
+                );
+              },
           child: Text(
             buttonText,
             style: const TextStyle(color: Colors.white),
