@@ -145,18 +145,22 @@ class HomeScreen extends StatelessWidget {
 
         
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                 return ProductWidget(product: products[index]);
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  sliver: SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (context, index) {
+        if (products.isEmpty) {
+          return const Center(
+            child: Text("Nema proizvoda"),
+          );
+        }
 
-
-                },
-                childCount: products.length,
-              ),
-            ),
-          ),
+        return ProductWidget(product: products[index]);
+      },
+      childCount: products.isEmpty ? 1 : products.length,
+    ),
+  ),
+),
 
           
           SliverToBoxAdapter(

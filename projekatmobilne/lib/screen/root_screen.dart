@@ -40,8 +40,13 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
         controller: controller,
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (index) {
+          setState(() {
+            currentScreen = index;
+          });
+        },
         children: screens,
       ),
       bottomNavigationBar: NavigationBar(
@@ -61,7 +66,7 @@ class _RootScreenState extends State<RootScreen> {
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.home),
             icon: Icon(IconlyLight.home),
-            label: "Pocetna",
+            label: "Početna",
           ),
           NavigationDestination(
             selectedIcon: Icon(IconlyBold.search),

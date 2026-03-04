@@ -94,7 +94,7 @@ class ProductsProvider with ChangeNotifier {
       productPrice: 2400.0,
       productCategory: "Torte",
       productDescription:
-          "Bogata Čokolada i svež malina u savršenom spoju ukusa.",
+          "Bogata čokolada i svež malina u savršenom spoju ukusa.",
       productImage: "${AssetsManager.imagePath}/coko.jpg",
       productQuantity: 10,
     ),

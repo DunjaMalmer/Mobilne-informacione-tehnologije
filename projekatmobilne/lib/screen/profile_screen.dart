@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:projekatmobilne/providers/theme_provider.dart';
-import 'package:projekatmobilne/screen/admin/admin_dashboard.dart';
+import 'package:projekatmobilne/screen/inner_screen/orders/orders_screen.dart';
+import 'package:projekatmobilne/screen/inner_screen/viewed_recently.dart';
+import 'package:projekatmobilne/screen/inner_screen/wishlist.dart';
 import 'package:projekatmobilne/services/assets_manager.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -42,8 +44,8 @@ class ProfileScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 32,
                     backgroundColor: scheme.primaryContainer,
-                    backgroundImage: const NetworkImage(
-                      "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png",
+                    backgroundImage: AssetImage(
+                      "${AssetsManager.imagePath}/profile/profil.png",
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -91,17 +93,34 @@ class ProfileScreen extends StatelessWidget {
             _ProfileActionTile(
               imagePath: "${AssetsManager.imagePath}/bag/checkout.png",
               title: "Moje porudžbine",
-              onTap: () => onStubTap("Moje porudžbine"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const OrdersScreen()),
+                );
+              },
             ),
             _ProfileActionTile(
               imagePath: "${AssetsManager.imagePath}/bag/wishlist.png",
               title: "Lista želja",
-              onTap: () => onStubTap("Lista želja"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const WishlistScreen()),
+                );
+              },
             ),
             _ProfileActionTile(
               imagePath: "${AssetsManager.imagePath}/profile/repeat.png",
               title: "Skoro gledano",
-              onTap: () => onStubTap("Skoro gledano"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ViewedRecentlyScreen(),
+                  ),
+                );
+              },
             ),
             _ProfileActionTile(
               imagePath: "${AssetsManager.imagePath}/address.png",
@@ -131,21 +150,6 @@ class ProfileScreen extends StatelessWidget {
               value: themeProvider.getIsDarkTheme,
               onChanged: (value) {
                 themeProvider.setDarkTheme(themeValue: value);
-              },
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.admin_panel_settings_outlined),
-              title: const Text("Admin panel"),
-              subtitle: const Text("Upravljanje proizvodima"),
-              trailing: const Icon(IconlyLight.arrowRight2),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AdminDashboard(),
-                  ),
-                );
               },
             ),
             const SizedBox(height: 14),

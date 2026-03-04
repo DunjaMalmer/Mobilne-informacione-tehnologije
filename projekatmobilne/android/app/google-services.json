@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729730817992",
+    "project_id": "projekatmobilne-4fa67",
+    "storage_bucket": "projekatmobilne-4fa67.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729730817992:android:02f3ef77cb8e083c17aafd",
+        "android_client_info": {
+          "package_name": "com.example.projekatmobilne"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_vEViJLZE0qFczt9iF1MYIpH-DcuaKbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
