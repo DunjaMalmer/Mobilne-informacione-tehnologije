@@ -15,7 +15,7 @@ class AppConstants {
     ),
     CategoriesModel(
       id: "kolaci",
-      name: "Kolaci",
+      name: "Kolači",
       image: "${AssetsManager.imagePath}/mini.jpg",
     ),
     CategoriesModel(
@@ -26,7 +26,7 @@ class AppConstants {
     CategoriesModel(
       id: "deserti",
       name: "Bez šećera",
-      image: "${AssetsManager.imagePath}/vocna.jpg",
+      image: "${AssetsManager.imagePath}/kuki.jpg",
     ),
   ];
 }

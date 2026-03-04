@@ -9,7 +9,7 @@ class SearchScreen extends StatelessWidget {
     'Torte',
     'Kolači',
     'Makaronsi',
-    'Bez sećera',
+    'Bez šećera',
   ];
 
   static const List<Map<String, dynamic>> _results = [
@@ -20,6 +20,22 @@ class SearchScreen extends StatelessWidget {
       'imagePath': '${AssetsManager.imagePath}/cokomalina.jpg',
       'description': 'Čokoladna baza i lagani fil od maline.',
     },
+
+     {
+      'name': 'Torta od jagoda',
+      'category': 'Torte',
+      'priceRsd': 2400,
+      'imagePath': '${AssetsManager.imagePath}/jagoda.jpg',
+      'description': 'Čokoladna baza i lagani fil od maline.',
+    },
+
+     {
+      'name': 'Torta od bombona',
+      'category': 'Torte',
+      'priceRsd': 2400,
+      'imagePath': '${AssetsManager.imagePath}/sarena.jpg',
+      'description': 'Vesela torta sa šarenim bombonama i bogatim kremom.',
+    },
     {
       'name': 'Pistać makaronsi',
       'category': 'Makaronsi',
@@ -27,6 +43,24 @@ class SearchScreen extends StatelessWidget {
       'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
       'description': 'Kremasti pistać fil i hrskava korica.',
     },
+
+    {
+      'name': 'Malina makaronsi',
+      'category': 'Makaronsi',
+      'priceRsd': 690,
+      'imagePath': '${AssetsManager.imagePath}/malina.jpg',
+      'description': 'Kremasti malina fil i hrskava korica.',
+    },
+
+    {
+      'name': 'Narandza makaronsi',
+      'category': 'Makaronsi',
+      'priceRsd': 690,
+      'imagePath': '${AssetsManager.imagePath}/narandza.jpg',
+      'description': 'Kremasti narandza fil i hrskava korica.',
+    },
+
+    
     {
       'name': 'Mini cheesecake',
       'category': 'Deserti',
@@ -34,6 +68,22 @@ class SearchScreen extends StatelessWidget {
       'imagePath': '${AssetsManager.imagePath}/mini.jpg',
       'description': 'Lagani mini cheesecake za brzo i slatko uživanje.',
     },
+
+    {
+      'name': 'Kolač bez šećera',
+      'category': 'Bez šećera',
+      'priceRsd': 390,
+      'imagePath': '${AssetsManager.imagePath}/kuki.jpg',
+      'description': 'Domaći kolač bez dodatog šećera.',
+},
+
+ {
+      'name': 'Mafin bez šećera',
+      'category': 'Bez šećera',
+      'priceRsd': 390,
+      'imagePath': '${AssetsManager.imagePath}/mafin.jpg',
+      'description': 'Domaći mafin bez dodatog šećera.',
+},
   ];
 
   @override

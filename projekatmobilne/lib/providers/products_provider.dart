@@ -98,6 +98,28 @@ class ProductsProvider with ChangeNotifier {
       productImage: "${AssetsManager.imagePath}/coko.jpg",
       productQuantity: 10,
     ),
+
+      ProductModel(
+      productId: const Uuid().v4(),
+      productTitle: "Torta od jagode",
+      productPrice: 2400.0,
+      productCategory: "Torte",
+      productDescription:
+          "Lagani biskvit sa kremastim filom i svežim jagodama koji daju osvežavajući voćni ukus.",
+      productImage: "${AssetsManager.imagePath}/jagoda.jpg",
+      productQuantity: 10,
+    ),
+
+     ProductModel(
+      productId: const Uuid().v4(),
+      productTitle: "Torta od bombona",
+      productPrice: 2400.0,
+      productCategory: "Torte",
+      productDescription:
+          "Slatka i razigrana torta ukrašena šarenim bombonama koja donosi zabavan i bogat ukus.",
+      productImage: "${AssetsManager.imagePath}/sarena.jpg",
+      productQuantity: 10,
+    ),
     ProductModel(
       productId: const Uuid().v4(),
       productTitle: "Pistać makaronsi",
@@ -108,6 +130,30 @@ class ProductsProvider with ChangeNotifier {
       productImage: "${AssetsManager.imagePath}/pistaci.jpg",
       productQuantity: 25,
     ),
+
+     ProductModel(
+      productId: const Uuid().v4(),
+      productTitle: "Malina makaronsi",
+      productPrice: 690.0,
+      productCategory: "Makaronsi",
+      productDescription:
+          "Nežni francuski makarons punjen kremom od maline – savršen spoj hrskave korice i voćne svežine",
+      productImage: "${AssetsManager.imagePath}/malina.jpg",
+      productQuantity: 25,
+    ),
+
+      ProductModel(
+      productId: const Uuid().v4(),
+      productTitle: "Narandza makaronsi",
+      productPrice: 690.0,
+      productCategory: "Makaronsi",
+      productDescription:
+          "Makarons sa kremastim filom od narandže i osvežavajućom citrusnom aromom.",
+      productImage: "${AssetsManager.imagePath}/narandza.jpg",
+      productQuantity: 25,
+    ),
+
+    
     ProductModel(
       productId: const Uuid().v4(),
       productTitle: "Mini cheesecake",
@@ -117,5 +163,27 @@ class ProductsProvider with ChangeNotifier {
       productImage: "${AssetsManager.imagePath}/mini.jpg",
       productQuantity: 30,
     ),
+   ProductModel(
+  productId: const Uuid().v4(),
+  productTitle: "Kolač bez šećera",
+  productPrice: 390.0,
+  productCategory: "Bez šećera",
+  productDescription: "Zdravija poslastica bez dodatog šećera koja pruža sladak užitak bez griže savesti",
+  productImage: "${AssetsManager.imagePath}/kuki.jpg",
+  productQuantity: 20,
+),
+
+   ProductModel(
+  productId: const Uuid().v4(),
+  productTitle: "Mafin bez šećera",
+  productPrice: 390.0,
+  productCategory: "Bez šećera",
+  productDescription: "Mekani mafin bez dodatog šećera, pripremljen od pažljivo odabranih sastojaka za lagan i zdrav desert",
+  productImage: "${AssetsManager.imagePath}/mafin.jpg",
+  productQuantity: 20,
+),
+
+
+
   ];
 }
