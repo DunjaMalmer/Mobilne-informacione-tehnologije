@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -7,6 +5,7 @@ class PickImageWidget extends StatelessWidget {
   const PickImageWidget({super.key, this.pickedImage, required this.function});
   final XFile? pickedImage;
   final Function function;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -26,9 +25,29 @@ class PickImageWidget extends StatelessWidget {
                       ),
                     ),
                   )
-                : Image.file(
-                    File(pickedImage!.path),
-                    fit: BoxFit.fill,
+                : FutureBuilder(
+                    future: pickedImage!.readAsBytes(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        );
+                      }
+
+                      if (!snapshot.hasData) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                        );
+                      }
+
+                      return Image.memory(
+                        snapshot.data!,
+                        fit: BoxFit.fill,
+                      );
+                    },
                   ),
           ),
         ),

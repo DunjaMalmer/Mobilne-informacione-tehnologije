@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:provider/provider.dart';
+import 'package:projekatmobilne/providers/products_provider.dart';
 import 'package:projekatmobilne/screen/cart/cart_screen.dart';
 import 'package:projekatmobilne/screen/home_screen.dart';
 import 'package:projekatmobilne/screen/profile_screen.dart';
@@ -17,6 +21,7 @@ class _RootScreenState extends State<RootScreen> {
   late final List<Widget> screens;
   int currentScreen = 0;
   late final PageController controller;
+  bool isLoadingProd = true;
 
   @override
   void initState() {
@@ -28,6 +33,25 @@ class _RootScreenState extends State<RootScreen> {
       ProfileScreen(),
     ];
     controller = PageController(initialPage: currentScreen);
+  }
+
+  Future<void> fetchFCT() async {
+    final productsProvider =
+        Provider.of<ProductsProvider>(context, listen: false);
+    try {
+      await productsProvider.fetchProducts();
+    } catch (error) {
+      log(error.toString());
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (isLoadingProd) {
+      fetchFCT();
+      isLoadingProd = false;
+    }
+    super.didChangeDependencies();
   }
 
   @override

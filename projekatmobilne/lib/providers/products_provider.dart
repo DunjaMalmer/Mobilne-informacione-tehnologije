@@ -1,17 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:projekatmobilne/models/product_model.dart';
-import 'package:projekatmobilne/services/assets_manager.dart';
-import 'package:uuid/uuid.dart';
 
 class ProductsProvider with ChangeNotifier {
-  List<ProductModel> get getProducts {
-    return _products;
-  }
+  final List<ProductModel> _products = [];
+  final productDb = FirebaseFirestore.instance.collection("products");
+
+  List<ProductModel> get getProducts => _products;
 
   ProductModel? findByProductId(String productId) {
     try {
       return _products.firstWhere((element) => element.productId == productId);
-    } catch (e) {
+    } catch (_) {
       return null;
     }
   }
@@ -19,8 +19,7 @@ class ProductsProvider with ChangeNotifier {
   List<ProductModel> findByCategory({required String categoryName}) {
     return _products
         .where((element) =>
-            element.productCategory.toLowerCase() ==
-            categoryName.toLowerCase())
+            element.productCategory.toLowerCase() == categoryName.toLowerCase())
         .toList();
   }
 
@@ -29,161 +28,44 @@ class ProductsProvider with ChangeNotifier {
     required List<ProductModel> passedList,
   }) {
     return passedList
-        .where((element) =>
-            element.productTitle.toLowerCase().contains(searchText.toLowerCase()))
+        .where((element) => element.productTitle
+            .toLowerCase()
+            .contains(searchText.toLowerCase()))
         .toList();
   }
 
-  void addProduct({
-    required String title,
-    required double price,
-    required String category,
-    required String description,
-    required String image,
-    required int quantity,
-  }) {
-    _products.insert(
-      0,
-      ProductModel(
-        productId: const Uuid().v4(),
-        productTitle: title,
-        productPrice: price,
-        productCategory: category,
-        productDescription: description,
-        productImage: image,
-        productQuantity: quantity,
-      ),
+  Future<List<ProductModel>> fetchProducts() async {
+    try {
+      final productSnapshot =
+          await productDb.get();
+
+      _products
+        ..clear()
+        ..addAll(
+          productSnapshot.docs.map((element) => ProductModel.fromFirestore(element)),
+        );
+      notifyListeners();
+      return _products;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Stream<List<ProductModel>> fetchProductsStream() {
+    return productDb.orderBy("createdAt", descending: true).snapshots().map(
+      (snapshot) {
+        _products
+          ..clear()
+          ..addAll(
+            snapshot.docs.map((element) => ProductModel.fromFirestore(element)),
+          );
+        return _products;
+      },
     );
-    notifyListeners();
   }
 
-  void updateProduct({
-    required String productId,
-    required String title,
-    required double price,
-    required String category,
-    required String description,
-    required String image,
-    required int quantity,
-  }) {
-    final index =
-        _products.indexWhere((product) => product.productId == productId);
-    if (index == -1) return;
-
-    _products[index] = ProductModel(
-      productId: productId,
-      productTitle: title,
-      productPrice: price,
-      productCategory: category,
-      productDescription: description,
-      productImage: image,
-      productQuantity: quantity,
-    );
+  void clearLocalProducts() {
+    _products.clear();
     notifyListeners();
   }
-
-  void removeProductById(String productId) {
-    _products.removeWhere((product) => product.productId == productId);
-    notifyListeners();
-  }
-
-  final List<ProductModel> _products = [
-    ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Čoko malina torta",
-      productPrice: 2400.0,
-      productCategory: "Torte",
-      productDescription:
-          "Bogata čokolada i svež malina u savršenom spoju ukusa.",
-      productImage: "${AssetsManager.imagePath}/coko.jpg",
-      productQuantity: 10,
-    ),
-
-      ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Torta od jagode",
-      productPrice: 2400.0,
-      productCategory: "Torte",
-      productDescription:
-          "Lagani biskvit sa kremastim filom i svežim jagodama koji daju osvežavajući voćni ukus.",
-      productImage: "${AssetsManager.imagePath}/jagoda.jpg",
-      productQuantity: 10,
-    ),
-
-     ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Torta od bombona",
-      productPrice: 2400.0,
-      productCategory: "Torte",
-      productDescription:
-          "Slatka i razigrana torta ukrašena šarenim bombonama koja donosi zabavan i bogat ukus.",
-      productImage: "${AssetsManager.imagePath}/sarena.jpg",
-      productQuantity: 10,
-    ),
-    ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Pistać makaronsi",
-      productPrice: 690.0,
-      productCategory: "Makaronsi",
-      productDescription:
-          "Omiljeni izbor kupaca sa kremastim pistać filom.",
-      productImage: "${AssetsManager.imagePath}/pistaci.jpg",
-      productQuantity: 25,
-    ),
-
-     ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Malina makaronsi",
-      productPrice: 690.0,
-      productCategory: "Makaronsi",
-      productDescription:
-          "Nežni francuski makarons punjen kremom od maline – savršen spoj hrskave korice i voćne svežine",
-      productImage: "${AssetsManager.imagePath}/malina.jpg",
-      productQuantity: 25,
-    ),
-
-      ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Narandza makaronsi",
-      productPrice: 690.0,
-      productCategory: "Makaronsi",
-      productDescription:
-          "Makarons sa kremastim filom od narandže i osvežavajućom citrusnom aromom.",
-      productImage: "${AssetsManager.imagePath}/narandza.jpg",
-      productQuantity: 25,
-    ),
-
-    
-    ProductModel(
-      productId: const Uuid().v4(),
-      productTitle: "Mini cheesecake",
-      productPrice: 480.0,
-      productCategory: "Mini poslastice",
-      productDescription: "Lagan i osvežavajući desert idealan uz kafu.",
-      productImage: "${AssetsManager.imagePath}/mini.jpg",
-      productQuantity: 30,
-    ),
-   ProductModel(
-  productId: const Uuid().v4(),
-  productTitle: "Kolač bez šećera",
-  productPrice: 390.0,
-  productCategory: "Bez šećera",
-  productDescription: "Zdravija poslastica bez dodatog šećera koja pruža sladak užitak bez griže savesti",
-  productImage: "${AssetsManager.imagePath}/kuki.jpg",
-  productQuantity: 20,
-),
-
-   ProductModel(
-  productId: const Uuid().v4(),
-  productTitle: "Mafin bez šećera",
-  productPrice: 390.0,
-  productCategory: "Bez šećera",
-  productDescription: "Mekani mafin bez dodatog šećera, pripremljen od pažljivo odabranih sastojaka za lagan i zdrav desert",
-  productImage: "${AssetsManager.imagePath}/mafin.jpg",
-  productQuantity: 20,
-),
-
-
-
-  ];
 }

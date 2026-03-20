@@ -18,6 +18,8 @@ class ProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final bool isNetworkImage = product.productImage.startsWith('http://') ||
+        product.productImage.startsWith('https://');
 
     return Padding(
       padding: const EdgeInsets.all(0.0),
@@ -32,12 +34,19 @@ class ProductWidget extends StatelessWidget {
             
             ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
-              child: Image.asset(
-                product.productImage,
-                height: size.height * 0.22,
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
+              child: isNetworkImage
+                  ? Image.network(
+                      product.productImage,
+                      height: size.height * 0.22,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                    )
+                  : Image.asset(
+                      product.productImage,
+                      height: size.height * 0.22,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                    ),
             ),
 
             const SizedBox(height: 12.0),

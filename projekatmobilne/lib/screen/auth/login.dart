@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:projekatmobilne/consts/validator.dart';
 import 'package:projekatmobilne/screen/auth/forgot_password.dart';
 import 'package:projekatmobilne/screen/auth/register.dart';
 import 'package:projekatmobilne/screen/root_screen.dart';
 import 'package:projekatmobilne/services/assets_manager.dart';
+import 'package:projekatmobilne/services/my_app_functions.dart';
 import 'package:projekatmobilne/widgets/auth/google_btn.dart';
 import 'package:projekatmobilne/widgets/subtitle_text.dart';
 import 'package:projekatmobilne/widgets/title_text.dart';
@@ -18,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool obscureText = true;
+  bool _isLoading = false;
+  final auth = FirebaseAuth.instance;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final FocusNode _emailFocusNode;
@@ -46,8 +51,47 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _loginFct() async {
-    //final isValid = _formkey.currentState!.validate();??
+    final isValid = _formkey.currentState!.validate();
     FocusScope.of(context).unfocus();
+    if (!isValid) {
+      return;
+    }
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Fluttertoast.showToast(
+        msg: "Login successful",
+        textColor: Colors.white,
+      );
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const RootScreen()),
+      );
+    } on FirebaseAuthException catch (error) {
+      await MyAppFunctions.showErrorOrWarningDialog(
+        context: context,
+        subtitle:
+            "[${error.code}] ${error.message ?? 'Unknown auth error'}",
+        fct: () {},
+      );
+    } catch (error) {
+      await MyAppFunctions.showErrorOrWarningDialog(
+        context: context,
+        subtitle: error.toString(),
+        fct: () {},
+      );
+    } finally {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -157,8 +201,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(ForgotPasswordScreen.routeName);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const ForgotPasswordScreen(),
+                              ),
+                            );
                           },
                           child: const SubtitleTextWidget(
                             label: "Forgot password?",
@@ -183,7 +231,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           icon: const Icon(Icons.login),
-                          label: const Text("Login"),
+                          label: _isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Text("Login"),
                           onPressed: () async {
                             await _loginFct();
                           },
@@ -229,8 +283,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   child: const Text("Guest?"),
                                   onPressed: () async {
-                                    Navigator.of(context)
-                                        .pushNamed(RootScreen.routeName);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const RootScreen(),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -252,8 +310,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               textDecoration: TextDecoration.underline,
                             ),
                             onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(RegisterScreen.routName);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const RegisterScreen(),
+                                ),
+                              );
                             },
                           ),
                         ],

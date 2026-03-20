@@ -18,7 +18,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: "AIzaSyALIJhuuQsFER6oMUc8s33RGh4RMvbB6Ao",
+    apiKey: "AIzaSyB_vEViJLZE0qFczt9iF1MYIpH-DcuaKbI",
     authDomain: "projekatmobilne-4fa67.firebaseapp.com",
     projectId: "projekatmobilne-4fa67",
     storageBucket: "projekatmobilne-4fa67.firebasestorage.app",
@@ -28,7 +28,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: "AIzaSyALIJhuuQsFER6oMUc8s33RGh4RMvbB6Ao",
+    apiKey: "AIzaSyB_vEViJLZE0qFczt9iF1MYIpH-DcuaKbI",
     appId: "1:729730817992:android:02f3ef77cb8e083c17aafd",
     messagingSenderId: "729730817992",
     projectId: "projekatmobilne-4fa67",

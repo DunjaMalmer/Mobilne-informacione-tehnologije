@@ -4,6 +4,7 @@ import 'package:projekatmobilne/consts/theme_data.dart';
 import 'package:projekatmobilne/providers/cart_provider.dart';
 import 'package:projekatmobilne/providers/products_provider.dart';
 import 'package:projekatmobilne/providers/theme_provider.dart';
+import 'package:projekatmobilne/providers/user_provider.dart';
 import 'package:projekatmobilne/providers/viewed_recently_provider.dart';
 import 'package:projekatmobilne/providers/wishlist_provider.dart';
 import 'package:projekatmobilne/screen/root_screen.dart';
@@ -15,6 +16,7 @@ void main() async {
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
+  debugPrint("Firebase projectId: ${Firebase.app().options.projectId}");
   runApp(const MyApp());
 }
 
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => WishlistProvider()),
         ChangeNotifierProvider(create: (_) => ViewedProdProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

@@ -12,7 +12,7 @@ class ProductDetailsScreen extends StatefulWidget {
   });
 
   final String name;
-  final int priceRsd;
+  final double priceRsd;
   final String imagePath;
   final String description;
   final String category;
@@ -23,6 +23,10 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
+
+  bool _isNetworkImage(String path) {
+    return path.startsWith('http://') || path.startsWith('https://');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +41,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              widget.imagePath,
-              height: 280,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            _isNetworkImage(widget.imagePath)
+                ? Image.network(
+                    widget.imagePath,
+                    height: 280,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    widget.imagePath,
+                    height: 280,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
               child: Column(
@@ -68,7 +79,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Row(
                     children: [
                       Text(
-                        "${widget.priceRsd} RSD",
+                        "${widget.priceRsd.toStringAsFixed(0)} RSD",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
@@ -175,7 +186,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         child: ElevatedButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.shopping_bag_outlined),
-                          label: Text('Dodaj $total RSD'),
+                          label: Text('Dodaj ${total.toStringAsFixed(0)} RSD'),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                           ),

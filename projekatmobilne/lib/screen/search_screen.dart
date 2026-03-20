@@ -1,94 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:projekatmobilne/providers/products_provider.dart';
 import 'package:projekatmobilne/screen/inner_screen/product_details.dart';
-import 'package:projekatmobilne/services/assets_manager.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
-  static const List<String> _filters = [
-    'Torte',
-    'Kolači',
-    'Makaronsi',
-    'Bez šećera',
-  ];
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
 
-  static const List<Map<String, dynamic>> _results = [
-    {
-      'name': 'Čoko malina torta',
-      'category': 'Torte',
-      'priceRsd': 2400,
-      'imagePath': '${AssetsManager.imagePath}/cokomalina.jpg',
-      'description': 'Čokoladna baza i lagani fil od maline.',
-    },
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchTextController = TextEditingController();
 
-     {
-      'name': 'Torta od jagoda',
-      'category': 'Torte',
-      'priceRsd': 2400,
-      'imagePath': '${AssetsManager.imagePath}/jagoda.jpg',
-      'description': 'Čokoladna baza i lagani fil od maline.',
-    },
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    super.dispose();
+  }
 
-     {
-      'name': 'Torta od bombona',
-      'category': 'Torte',
-      'priceRsd': 2400,
-      'imagePath': '${AssetsManager.imagePath}/sarena.jpg',
-      'description': 'Vesela torta sa šarenim bombonama i bogatim kremom.',
-    },
-    {
-      'name': 'Pistać makaronsi',
-      'category': 'Makaronsi',
-      'priceRsd': 690,
-      'imagePath': '${AssetsManager.imagePath}/pistaci.jpg',
-      'description': 'Kremasti pistać fil i hrskava korica.',
-    },
-
-    {
-      'name': 'Malina makaronsi',
-      'category': 'Makaronsi',
-      'priceRsd': 690,
-      'imagePath': '${AssetsManager.imagePath}/malina.jpg',
-      'description': 'Kremasti malina fil i hrskava korica.',
-    },
-
-    {
-      'name': 'Narandza makaronsi',
-      'category': 'Makaronsi',
-      'priceRsd': 690,
-      'imagePath': '${AssetsManager.imagePath}/narandza.jpg',
-      'description': 'Kremasti narandza fil i hrskava korica.',
-    },
-
-    
-    {
-      'name': 'Mini cheesecake',
-      'category': 'Deserti',
-      'priceRsd': 480,
-      'imagePath': '${AssetsManager.imagePath}/mini.jpg',
-      'description': 'Lagani mini cheesecake za brzo i slatko uživanje.',
-    },
-
-    {
-      'name': 'Kolač bez šećera',
-      'category': 'Bez šećera',
-      'priceRsd': 390,
-      'imagePath': '${AssetsManager.imagePath}/kuki.jpg',
-      'description': 'Domaći kolač bez dodatog šećera.',
-},
-
- {
-      'name': 'Mafin bez šećera',
-      'category': 'Bez šećera',
-      'priceRsd': 390,
-      'imagePath': '${AssetsManager.imagePath}/mafin.jpg',
-      'description': 'Domaći mafin bez dodatog šećera.',
-},
-  ];
+  bool _isNetworkImage(String path) {
+    return path.startsWith('http://') || path.startsWith('https://');
+  }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final productsProvider = Provider.of<ProductsProvider>(context);
+
+    final allProducts = productsProvider.getProducts;
+    final searchText = _searchTextController.text.trim();
+    final shownProducts = searchText.isEmpty
+        ? allProducts
+        : productsProvider.searchQuery(
+            searchText: searchText,
+            passedList: allProducts,
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -97,27 +44,22 @@ class SearchScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Pretraži proizvode u Sweet Haven',
-              prefixIcon: const Icon(Icons.search_rounded),
-              suffixIcon: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.tune_rounded),
-              ),
+          const Text(
+            "OVO JE SEARCH",
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w900,
+              color: Colors.red,
             ),
           ),
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _filters.map((filter) {
-              return Chip(
-                label: Text(filter),
-                backgroundColor: scheme.surfaceContainerHighest,
-                side: BorderSide.none,
-              );
-            }).toList(),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _searchTextController,
+            onChanged: (_) => setState(() {}),
+            decoration: const InputDecoration(
+              hintText: 'Pretrazi proizvode u Sweet Haven',
+              prefixIcon: Icon(Icons.search_rounded),
+            ),
           ),
           const SizedBox(height: 20),
           Text(
@@ -129,48 +71,61 @@ class SearchScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          ..._results.map((item) {
-            return Card(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProductDetailsScreen(
-                        name: item['name'] as String,
-                        priceRsd: item['priceRsd'] as int,
-                        imagePath: item['imagePath'] as String,
-                        description: item['description'] as String,
-                        category: item['category'] as String,
+          if (shownProducts.isEmpty)
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Center(child: Text("No products found")),
+            )
+          else
+            ...shownProducts.map((item) {
+              return Card(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProductDetailsScreen(
+                          name: item.productTitle,
+                          priceRsd: item.productPrice,
+                          imagePath: item.productImage,
+                          description: item.productDescription,
+                          category: item.productCategory,
+                        ),
                       ),
+                    );
+                  },
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: _isNetworkImage(item.productImage)
+                        ? Image.network(
+                            item.productImage,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            item.productImage,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                  title: Text(
+                    item.productTitle,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  subtitle: Text(item.productCategory),
+                  trailing: Text(
+                    "${item.productPrice.toStringAsFixed(0)} RSD",
+                    style: TextStyle(
+                      color: scheme.primary,
+                      fontWeight: FontWeight.w700,
                     ),
-                  );
-                },
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    item['imagePath'] as String,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
                   ),
                 ),
-                title: Text(
-                  item['name'] as String,
-                  style: const TextStyle(fontWeight: FontWeight.w700),
-                ),
-                subtitle: Text(item['category'] as String),
-                trailing: Text(
-                  "${item['priceRsd']} RSD",
-                  style: TextStyle(
-                    color: scheme.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            );
-          }),
+              );
+            }),
         ],
       ),
     );
