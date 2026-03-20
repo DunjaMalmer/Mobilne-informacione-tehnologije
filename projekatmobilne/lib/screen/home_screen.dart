@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       body: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
 
           //APP BAR
